@@ -1,3 +1,4 @@
+<img width="2156" height="1365" alt="screenshot" src="https://github.com/user-attachments/assets/0021caff-62ef-4ad5-adf8-178f37b5bf72" />
 # Calusa
 
 **Calusa** is an interactive tool for visualizing pathogen transmission networks from genomic sequence data. It computes pairwise Hamming distances from FASTA-formatted haplotype sequences, identifies transmission clusters, and renders a force-directed network graph in the browser using D3.js.
@@ -8,7 +9,8 @@ Developed for genomic surveillance of bloodborne and foodborne pathogens (HCV, H
 
 ---
 
-![Calusa Screenshot](screenshot.png)
+<img width="2156" height="1365" alt="screenshot" src="https://github.com/user-attachments/assets/1b578bed-92f2-4915-a042-20eb75e1aca4" />
+
 
 *Interactive D3.js force-directed network showing 3 transmission clusters (10 samples, 12 links, threshold = 0.0) with cluster-based coloring, sample labels, and summary statistics.*
 
