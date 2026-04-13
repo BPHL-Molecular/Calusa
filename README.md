@@ -4,7 +4,7 @@
 
 Named after [Calusa Beach](https://www.floridastateparks.org/BahiaHonda) on Bahia Honda Key, Florida — one of the most iconic beaches in the Florida Keys.
 
-Developed for genomic surveillance of bloodborne and foodborne pathogens (HCV, HAV, HBV) in collaboration with CDC and the Florida Department of Health Bureau of Public Health Laboratories ([BPHL-Molecular](https://github.com/BPHL-Molecular)).
+Developed for genomic surveillance of bloodborne and foodborne pathogens (HCV, HAV, HBV).
 
 ---
 
