@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transmission Network Visualization</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <!-- PDF export libraries: jsPDF generates the PDF; svg2pdf.js converts SVG → vector PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/svg2pdf.js@2.2.3/dist/svg2pdf.umd.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -54,6 +57,9 @@
         .btn-secondary:hover { background: #334155; }
         .btn-success  { background: #059669; color: white; }
         .btn-success:hover  { background: #047857; }
+        .btn-danger   { background: #dc2626; color: white; }
+        .btn-danger:hover   { background: #b91c1c; }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
         .control-group {
             display: flex;
@@ -61,6 +67,14 @@
             gap: 0.5rem;
         }
         .control-group label { color: #cbd5e1; font-size: 0.875rem; }
+        #labelSizeValue {
+            color: #fff;
+            font-size: 0.875rem;
+            font-variant-numeric: tabular-nums;
+            min-width: 2ch;
+            display: inline-block;
+            text-align: right;
+        }
 
         select, input[type="range"] {
             padding: 0.4rem 0.6rem;
@@ -158,6 +172,7 @@
         <button class="btn btn-secondary" onclick="zoomIn()">🔍+ Zoom In</button>
         <button class="btn btn-secondary" onclick="zoomOut()">🔍− Zoom Out</button>
         <button class="btn btn-success"   onclick="exportSVG()">💾 Export SVG</button>
+        <button class="btn btn-danger" id="exportPdfBtn" onclick="exportPDF()">📄 Export PDF</button>
 
         <div class="right-controls">
             <div class="control-group">
@@ -173,6 +188,13 @@
                     <input type="checkbox" id="showLabels" onchange="toggleLabels()">
                     Show Labels
                 </label>
+            </div>
+
+            <div class="control-group">
+                <label for="labelSize">Label size:</label>
+                <input type="range" id="labelSize" min="8" max="40" step="1" value="12"
+                       oninput="updateLabelSize()" style="width: 100px;">
+                <span id="labelSizeValue">12</span>
             </div>
         </div>
     </div>
@@ -262,11 +284,12 @@ function normalise(raw) {
     }
 
     // nodes must have {id, cluster(int|null), num_sequences}
+    // GHOST exports use `haplotypes` for the same quantity, so we accept that too.
     const nodes = (raw.nodes || []).map(n => ({
         id:            String(n.id),
         cluster:       (n.cluster !== undefined && n.cluster !== null && n.cluster !== '')
                            ? Number(n.cluster) : null,
-        num_sequences: n.num_sequences ?? 1
+        num_sequences: n.num_sequences ?? n.haplotypes ?? 1
     }));
 
     // links: use "distance" (real_data_processor uses minimum_distance aliased to distance in export)
@@ -379,15 +402,16 @@ function initNetwork(data) {
             }));
 
     // ── Labels ──
+    const labelSize = parseInt(document.getElementById('labelSize').value, 10) || 12;
     const labelSel = g.append('g').attr('class', 'labels')
         .selectAll('text')
         .data(nodes)
         .join('text')
         .text(d => d.id)
-        .attr('font-size', 10)
+        .attr('font-size', labelSize)
         .attr('fill', '#cbd5e1')
         .attr('dx', d => r(d) + 4)
-        .attr('dy', 4)
+        .attr('dy', labelSize * 0.4)
         .style('display', document.getElementById('showLabels').checked ? 'block' : 'none')
         .style('pointer-events', 'none');
 
@@ -460,6 +484,15 @@ function toggleLabels() {
     }
 }
 
+function updateLabelSize() {
+    const size = parseInt(document.getElementById('labelSize').value, 10);
+    document.getElementById('labelSizeValue').textContent = size;
+    if (window._labelSel) {
+        // dy ≈ 0.4 × font-size keeps the text vertically centered next to the node
+        window._labelSel.attr('font-size', size).attr('dy', size * 0.4);
+    }
+}
+
 function resetView() {
     if (!zoomBehavior) return;
     d3.select('#network')
@@ -478,14 +511,408 @@ function updateStats(meta) {
     document.getElementById('statThreshold').textContent = meta.threshold;
 }
 
-function exportSVG() {
+// ─────────────────────────────────────────────
+//  Cluster compaction for PDF export
+//  Re-packs connected components closer together so the PDF doesn't
+//  waste space on whitespace between clusters. Only changes the
+//  positions of SVG elements; the in-memory force-simulation data
+//  is untouched, so the on-screen layout is unaffected.
+//  Returns { bbox, restore } where bbox is the tight bounding box
+//  of the new layout (use it as PDF viewBox), or null if nothing to do.
+// ─────────────────────────────────────────────
+function compactClustersForExport(padding = 25) {
+    const allCircles = d3.selectAll('svg#network g.nodes circle');
+    const allLines   = d3.selectAll('svg#network g.links line');
+    const allLabels  = d3.selectAll('svg#network g.labels text');
+
+    const nodes = allCircles.data();
+    const links = allLines.data();
+    if (nodes.length === 0) return null;
+
+    const nodeById = new Map(nodes.map(n => [n.id, n]));
+    const radius   = d => radiusScale(d.num_sequences || 1);
+
+    // 1) Connected components via BFS over the link graph
+    const adj = new Map(nodes.map(n => [n.id, []]));
+    for (const l of links) {
+        const s = typeof l.source === 'object' ? l.source.id : l.source;
+        const t = typeof l.target === 'object' ? l.target.id : l.target;
+        if (adj.has(s) && adj.has(t)) {
+            adj.get(s).push(t);
+            adj.get(t).push(s);
+        }
+    }
+    const visited = new Set();
+    const comps = [];
+    for (const n of nodes) {
+        if (visited.has(n.id)) continue;
+        const comp = [];
+        const queue = [n.id];
+        while (queue.length) {
+            const id = queue.shift();
+            if (visited.has(id)) continue;
+            visited.add(id);
+            comp.push(id);
+            for (const nb of adj.get(id)) {
+                if (!visited.has(nb)) queue.push(nb);
+            }
+        }
+        comps.push(comp);
+    }
+    if (comps.length <= 1) return null;   // nothing to repack
+
+    // 2) Component bbox — including label extent so labels also fit
+    const labelSize  = parseInt(document.getElementById('labelSize').value, 10) || 12;
+    const showLabels = document.getElementById('showLabels').checked;
+
+    const compInfo = comps.map(ids => {
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        ids.forEach(id => {
+            const n  = nodeById.get(id);
+            const rr = radius(n);
+            minX = Math.min(minX, n.x - rr);
+            minY = Math.min(minY, n.y - rr);
+            maxX = Math.max(maxX, n.x + rr);
+            maxY = Math.max(maxY, n.y + rr);
+            if (showLabels) {
+                // Approximate label extent (text sits to the right of the node)
+                const lbW = 0.6 * labelSize * (n.id ? n.id.length : 0);
+                maxX = Math.max(maxX, n.x + rr + 4 + lbW);
+                maxY = Math.max(maxY, n.y + labelSize);
+            }
+        });
+        return {
+            ids,
+            minX, minY, maxX, maxY,
+            cx: (minX + maxX) / 2,
+            cy: (minY + maxY) / 2,
+            width:  maxX - minX,
+            height: maxY - minY
+        };
+    });
+
+    // 3) Pack with d3-force: each component is a single circle particle.
+    //    To match the PDF viz area aspect ratio (landscape A4 ≈ 1.66 wide),
+    //    we use anisotropic forceX/forceY — weaker X means clusters spread
+    //    horizontally, stronger Y means they pack vertically. Without this,
+    //    a default forceCenter packs into a rough circle and wastes space
+    //    on a wide page.
+    const SVG_W = document.querySelector('#network').clientWidth  || 1200;
+    const SVG_H = document.querySelector('#network').clientHeight || 800;
+    const TARGET_ASPECT = 1.66;             // PDF viz area is ~277 × 167 mm
+    const sqrtAspect    = Math.sqrt(TARGET_ASPECT);
+    const particles = compInfo.map((info, i) => ({
+        i,
+        info,
+        // bbox-diagonal/2 + padding for safe non-overlap
+        r: 0.5 * Math.sqrt(info.width * info.width + info.height * info.height) + padding,
+        x: info.cx,
+        y: info.cy
+    }));
+
+    const sim = d3.forceSimulation(particles)
+        .force('x',       d3.forceX(SVG_W / 2).strength(0.10 / sqrtAspect))
+        .force('y',       d3.forceY(SVG_H / 2).strength(0.10 * sqrtAspect))
+        .force('collide', d3.forceCollide(d => d.r).iterations(4).strength(1))
+        .stop();
+    for (let i = 0; i < 400; i++) sim.tick();
+
+    // 4) Per-node offset = (newCenter - oldCenter) of its component
+    const offsetById = new Map();
+    particles.forEach(p => {
+        const dx = p.x - p.info.cx;
+        const dy = p.y - p.info.cy;
+        p.info.ids.forEach(id => offsetById.set(id, { dx, dy }));
+    });
+
+    // 5) Apply offsets to SVG elements (without touching in-memory data)
+    allCircles
+        .attr('cx', d => d.x + (offsetById.get(d.id) ? offsetById.get(d.id).dx : 0))
+        .attr('cy', d => d.y + (offsetById.get(d.id) ? offsetById.get(d.id).dy : 0));
+
+    allLines.each(function(l) {
+        const sId = typeof l.source === 'object' ? l.source.id : l.source;
+        const tId = typeof l.target === 'object' ? l.target.id : l.target;
+        const so  = offsetById.get(sId) || { dx: 0, dy: 0 };
+        const to  = offsetById.get(tId) || { dx: 0, dy: 0 };
+        const sx  = (typeof l.source === 'object' ? l.source.x : 0) + so.dx;
+        const sy  = (typeof l.source === 'object' ? l.source.y : 0) + so.dy;
+        const tx  = (typeof l.target === 'object' ? l.target.x : 0) + to.dx;
+        const ty  = (typeof l.target === 'object' ? l.target.y : 0) + to.dy;
+        d3.select(this)
+            .attr('x1', sx).attr('y1', sy)
+            .attr('x2', tx).attr('y2', ty);
+    });
+
+    allLabels
+        .attr('x', d => d.x + (offsetById.get(d.id) ? offsetById.get(d.id).dx : 0))
+        .attr('y', d => d.y + (offsetById.get(d.id) ? offsetById.get(d.id).dy : 0));
+
+    // 6) Tight bbox of the new compact layout
+    let nMinX = Infinity, nMinY = Infinity, nMaxX = -Infinity, nMaxY = -Infinity;
+    particles.forEach(p => {
+        const ox = p.x - p.info.cx;
+        const oy = p.y - p.info.cy;
+        nMinX = Math.min(nMinX, p.info.minX + ox);
+        nMinY = Math.min(nMinY, p.info.minY + oy);
+        nMaxX = Math.max(nMaxX, p.info.maxX + ox);
+        nMaxY = Math.max(nMaxY, p.info.maxY + oy);
+    });
+    const pad = 20;
+    const bbox = {
+        x:      nMinX - pad,
+        y:      nMinY - pad,
+        width:  (nMaxX - nMinX) + 2 * pad,
+        height: (nMaxY - nMinY) + 2 * pad
+    };
+
+    // 7) Restore function — undoes everything we changed in the SVG
+    function restore() {
+        allCircles.attr('cx', d => d.x).attr('cy', d => d.y);
+        allLines
+            .attr('x1', l => typeof l.source === 'object' ? l.source.x : 0)
+            .attr('y1', l => typeof l.source === 'object' ? l.source.y : 0)
+            .attr('x2', l => typeof l.target === 'object' ? l.target.x : 0)
+            .attr('y2', l => typeof l.target === 'object' ? l.target.y : 0);
+        allLabels.attr('x', d => d.x).attr('y', d => d.y);
+    }
+
+    return { bbox, restore };
+}
+
+// ─────────────────────────────────────────────
+//  Shared "prepare SVG for export" helper used by both exportSVG and exportPDF.
+//  Pauses the simulation, resets the zoom/pan transform, packs clusters
+//  closer together, and writes a tight viewBox so the exported file uses
+//  the page area efficiently. Returns { svgEl, bbox, cleanup } where
+//  cleanup() must be called in a finally block to restore everything.
+// ─────────────────────────────────────────────
+function prepareSvgForExport({ includeBackground = false } = {}) {
     const svgEl = document.getElementById('network');
-    const src   = new XMLSerializer().serializeToString(svgEl);
-    const blob  = new Blob([src], { type: 'image/svg+xml' });
-    const url   = URL.createObjectURL(blob);
-    const a     = document.createElement('a');
-    a.href = url; a.download = 'transmission_network.svg'; a.click();
-    URL.revokeObjectURL(url);
+
+    let restoreCompact       = null;
+    let prevTransform        = null;
+    let sceneG               = null;
+    let simulationWasStopped = false;
+    let svgAttrSnapshot      = null;
+    let bgRect               = null;
+
+    // Pause main simulation so its tick handler doesn't overwrite us
+    if (simulation) {
+        simulation.stop();
+        simulationWasStopped = true;
+    }
+
+    // Reset zoom/pan transform so viewBox can frame compacted content directly
+    sceneG = svgEl.querySelector('g.scene');
+    if (sceneG) {
+        prevTransform = sceneG.getAttribute('transform');
+        if (prevTransform) sceneG.removeAttribute('transform');
+    }
+
+    // Repack connected components closer together
+    const compactResult = compactClustersForExport();
+    let svgW, svgH, vbX = 0, vbY = 0;
+    if (compactResult) {
+        restoreCompact = compactResult.restore;
+        vbX  = compactResult.bbox.x;
+        vbY  = compactResult.bbox.y;
+        svgW = compactResult.bbox.width;
+        svgH = compactResult.bbox.height;
+    } else {
+        // Single component (or no data): use the SVG viewport
+        const svgRect = svgEl.getBoundingClientRect();
+        svgW = svgRect.width  || 1200;
+        svgH = svgRect.height || 800;
+    }
+
+    // Stamp viewBox / width / height so external tools (svg2pdf, browsers
+    // opening the .svg file) know the coordinate space
+    svgAttrSnapshot = {
+        viewBox: svgEl.getAttribute('viewBox'),
+        width:   svgEl.getAttribute('width'),
+        height:  svgEl.getAttribute('height')
+    };
+    svgEl.setAttribute('viewBox', `${vbX} ${vbY} ${svgW} ${svgH}`);
+    svgEl.setAttribute('width',  svgW);
+    svgEl.setAttribute('height', svgH);
+
+    // Insert a dark background rect so the standalone SVG file is readable
+    // in any viewer (browsers/editors usually default to a white canvas, on
+    // which our light-grey labels would be invisible). Inserted as the first
+    // child so it renders behind everything else. Skipped for PDF path
+    // because exportPDF already draws its own viz-area background.
+    if (includeBackground) {
+        bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        bgRect.setAttribute('x',      vbX);
+        bgRect.setAttribute('y',      vbY);
+        bgRect.setAttribute('width',  svgW);
+        bgRect.setAttribute('height', svgH);
+        bgRect.setAttribute('fill',   '#0f172a');     // matches on-screen
+        svgEl.insertBefore(bgRect, svgEl.firstChild);
+    }
+
+    return {
+        svgEl,
+        bbox: { x: vbX, y: vbY, width: svgW, height: svgH },
+        cleanup() {
+            // Remove the temporary background rect (if we inserted one)
+            if (bgRect && bgRect.parentNode) {
+                bgRect.parentNode.removeChild(bgRect);
+            }
+            // Restore SVG attributes
+            if (svgEl && svgAttrSnapshot) {
+                ['viewBox', 'width', 'height'].forEach(k => {
+                    if (svgAttrSnapshot[k] === null) svgEl.removeAttribute(k);
+                    else svgEl.setAttribute(k, svgAttrSnapshot[k]);
+                });
+            }
+            // Un-compact: restore on-screen layout
+            if (restoreCompact) restoreCompact();
+            // Restore zoom/pan transform
+            if (sceneG && prevTransform) sceneG.setAttribute('transform', prevTransform);
+            // Resume simulation in its current (cooled) state — passing no alpha
+            // avoids re-heating it and jolting on-screen nodes around
+            if (simulationWasStopped && simulation) simulation.restart();
+        }
+    };
+}
+
+function exportSVG() {
+    if (!networkData) {
+        alert('Please upload a network.json file before exporting to SVG.');
+        return;
+    }
+
+    const prep = prepareSvgForExport({ includeBackground: true });
+    try {
+        // Serialize the prepared SVG (clusters compacted, viewBox tight,
+        // dark background rect inserted)
+        const src  = new XMLSerializer().serializeToString(prep.svgEl);
+        const blob = new Blob([src], { type: 'image/svg+xml' });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href = url;
+        a.download = 'transmission_network.svg';
+        a.click();
+        URL.revokeObjectURL(url);
+    } finally {
+        prep.cleanup();
+    }
+}
+
+// ─────────────────────────────────────────────
+//  Export PDF
+//  Uses jsPDF + svg2pdf.js to produce a vector-quality PDF
+//  (the network stays crisp at any zoom level — not a bitmap)
+// ─────────────────────────────────────────────
+async function exportPDF() {
+    if (!networkData) {
+        alert('Please upload a network.json file before exporting to PDF.');
+        return;
+    }
+
+    const btn = document.getElementById('exportPdfBtn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '⏳ Exporting…';
+    btn.disabled = true;
+
+    let prep = null;
+    try {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({
+            orientation: 'landscape',
+            unit:        'mm',
+            format:      'a4'
+        });
+
+        const pageW  = pdf.internal.pageSize.getWidth();   // 297mm
+        const pageH  = pdf.internal.pageSize.getHeight();  // 210mm
+        const margin = 10;
+
+        // ── Header band (matches on-screen #1e293b) ──
+        pdf.setFillColor(30, 41, 59);
+        pdf.rect(0, 0, pageW, 22, 'F');
+
+        pdf.setTextColor(255, 255, 255);
+        pdf.setFont('helvetica', 'bold');
+        pdf.setFontSize(14);
+        pdf.text('Transmission Network Visualization', margin, 10);
+
+        pdf.setFont('helvetica', 'normal');
+        pdf.setFontSize(8);
+        pdf.setTextColor(148, 163, 184);
+        pdf.text('Genomic Outbreak Detection', margin, 16);
+
+        // ── Stats line on the right side of the header ──
+        const meta = networkData.meta;
+        pdf.setTextColor(255, 255, 255);
+        pdf.setFontSize(9);
+        const stats =
+            `Samples: ${meta.total_samples}    ` +
+            `Linked: ${meta.linked_samples}    ` +
+            `Clusters: ${meta.total_clusters}    ` +
+            `Links: ${meta.total_links}    ` +
+            `Threshold: ${meta.threshold}`;
+        pdf.text(stats, pageW - margin, 13, { align: 'right' });
+
+        // ── Visualization area with dark background (matches on-screen #0f172a) ──
+        const vizTop = 25;
+        const vizBot = pageH - 18;
+        const vizH   = vizBot - vizTop;
+        const vizW   = pageW - 2 * margin;
+
+        pdf.setFillColor(15, 23, 42);
+        pdf.rect(margin, vizTop, vizW, vizH, 'F');
+
+        // ── Compact + viewBox-prepare the SVG (shared with exportSVG) ──
+        prep = prepareSvgForExport();
+        const svgW = prep.bbox.width;
+        const svgH = prep.bbox.height;
+
+        // Scale SVG to fit the viz area while preserving aspect ratio
+        const scale = Math.min(vizW / svgW, vizH / svgH);
+        const drawW = svgW * scale;
+        const drawH = svgH * scale;
+        const drawX = margin + (vizW - drawW) / 2;
+        const drawY = vizTop + (vizH - drawH) / 2;
+
+        await pdf.svg(prep.svgEl, {
+            x:      drawX,
+            y:      drawY,
+            width:  drawW,
+            height: drawH
+        });
+
+        // ── Footer band with legend & timestamp ──
+        pdf.setFillColor(30, 41, 59);
+        pdf.rect(0, pageH - 15, pageW, 15, 'F');
+
+        pdf.setTextColor(203, 213, 225);
+        pdf.setFontSize(8);
+        const legend =
+            'Node size proportional to sqrt(number of sequences)    |    ' +
+            'Link width proportional to (1 - distance / threshold)    |    ' +
+            'Each color represents one transmission cluster';
+        pdf.text(legend, margin, pageH - 9);
+
+        pdf.setTextColor(100, 116, 139);
+        pdf.setFontSize(7);
+        pdf.text(`Generated: ${new Date().toLocaleString()}`,
+                 pageW - margin, pageH - 5, { align: 'right' });
+        pdf.text('Calusa - Transmission Network Visualization',
+                 margin, pageH - 5);
+
+        // ── Save ──
+        pdf.save('transmission_network.pdf');
+    } catch (err) {
+        console.error('PDF export error:', err);
+        alert('Error exporting PDF: ' + err.message);
+    } finally {
+        if (prep) prep.cleanup();
+        btn.innerHTML = originalText;
+        btn.disabled  = false;
+    }
 }
 </script>
 </body>

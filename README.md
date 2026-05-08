@@ -6,12 +6,10 @@ Named after [Calusa Beach](https://www.floridastateparks.org/BahiaHonda) on Bahi
 
 Developed for genomic surveillance of bloodborne and foodborne pathogens (HCV, HAV, HBV).
 
----
+> **Try it now → [bphl-molecular.github.io/Calusa](https://bphl-molecular.github.io/Calusa/)** — open the link, drag in a JSON file, and explore. No installation, no server. All processing runs in your browser; nothing is uploaded.
 
-<img width="2156" height="1365" alt="screenshot" src="https://github.com/user-attachments/assets/1b578bed-92f2-4915-a042-20eb75e1aca4" />
-
-
-*Interactive D3.js force-directed network showing 3 transmission clusters (10 samples, 12 links, threshold = 0.0) with cluster-based coloring, sample labels, and summary statistics.*
+![Calusa transmission network](docs/images/screenshot-pdf-export.png)
+*Sample GHOST surveillance dataset visualized in Calusa: 30 samples, 4 transmission clusters, 110 links. Node size scales with haplotype count; each color is a separate cluster. Try this exact view by uploading [`examples/ghost_network_sample.json`](examples/ghost_network_sample.json).*
 
 ---
 
@@ -21,7 +19,7 @@ Calusa consists of two components:
 
 **`calusa.py`** — A Python pipeline that reads multi-sequence FASTA files, calculates minimum pairwise Hamming distances between samples, identifies transmission clusters via depth-first search, and exports results as CSV and JSON.
 
-**`calusa.html`** — A standalone, single-file HTML/JavaScript application that loads the exported JSON and renders an interactive D3.js force-directed network graph with zoom, pan, cluster coloring, tooltips, label toggling, and SVG export.
+**`calusa.html`** — A standalone, single-file HTML/JavaScript application that loads exported JSON and renders an interactive D3.js force-directed network graph with zoom, pan, cluster coloring, tooltips, label toggling, adjustable label size, and SVG/PDF export. The visualizer also accepts JSON output from CDC's [GHOST](https://www.cdc.gov/hepatitis-vrdl/php/ghost/index.html) system for HCV/HAV surveillance, so existing GHOST users can visualize their results directly.
 
 ## Features
 
@@ -32,17 +30,26 @@ Calusa consists of two components:
 - Node sizing scaled by haplotype sequence count
 - Distance-weighted link styling (thicker = closer)
 - Hover tooltips showing sample ID, cluster, sequence count, and link distances
-- Zoom, pan, label toggle, and SVG export controls
-- Fully client-side visualization — no server required
+- Zoom, pan, label toggle, adjustable label size, and SVG / PDF export
+- PDF / SVG export automatically packs clusters tightly so the figure fits a printed page without shrinking the individual clusters
+- Drop-in compatibility with JSON exported by CDC's GHOST system (HCV/HAV surveillance)
+- Fully client-side visualization — no server required, nothing leaves the browser
 
 ## Requirements
 
 **Python pipeline:**
 
-- Python 3.8+
+- Python 3.8+ (3.11 recommended)
 - pandas
 
-Install dependencies:
+Install with **conda** (recommended for reproducibility):
+
+```bash
+conda create -n calusa -c conda-forge python=3.11 pandas -y
+conda activate calusa
+```
+
+Or with **pip**:
 
 ```bash
 pip install pandas
@@ -50,10 +57,30 @@ pip install pandas
 
 **Visualization:**
 
-- Any modern web browser (Chrome, Firefox, Edge, Safari)
-- D3.js v7 is loaded from CDN automatically
+- Any modern web browser (Chrome, Firefox, Edge, Safari — last two versions)
+- D3.js v7, jsPDF, and svg2pdf.js are loaded automatically from public CDNs
+- No installation needed if you use the [hosted version](https://bphl-molecular.github.io/Calusa/)
+
+## Resource Requirements
+
+**Python pipeline (`calusa.py`):**
+
+- CPU: any modern processor; pairwise distance is computed in O(n²) time over sample pairs
+- RAM: a few hundred MB for typical surveillance datasets (≤ 100 samples × few thousand bp); larger datasets (1000+ samples) may need 2 GB or more
+- Disk: outputs are small — a few hundred KB to a few MB per run
+- Runtime: seconds to a few minutes for routine datasets
+
+**Browser visualization (`calusa.html`):**
+
+- Any modern desktop or mobile browser
+- ~4 GB system RAM is comfortable for networks with 500+ nodes; smaller graphs run on essentially anything
+- All computation runs client-side — uploaded JSON files never leave your browser, even when using the hosted version
 
 ## Quick Start
+
+**The fastest path:** if you already have a `network.json` (from `calusa.py`, GHOST, or any compatible source), open the [hosted version](https://bphl-molecular.github.io/Calusa/) and upload it — that's the entire workflow.
+
+To generate your own JSON from FASTA sequences:
 
 ### 1. Generate Network Data
 
@@ -83,9 +110,9 @@ python calusa.py --create-sample
 
 ### 2. Visualize the Network
 
-1. Open `calusa.html` in a web browser.
+1. Open `calusa.html` locally, **or** use the [hosted version](https://bphl-molecular.github.io/Calusa/).
 2. Click **Upload JSON** and select the generated `network.json`.
-3. Interact with the network: zoom, pan, hover for details, toggle labels, and export as SVG.
+3. Interact with the network: zoom, pan, hover for details, toggle labels, adjust label size, and export as SVG or PDF.
 
 ## Input Format
 
@@ -101,6 +128,24 @@ ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG
 >Sample_003_seq_1
 GGCGATCGATCGATCGATCGATCGATCGATCGATCGATCG
 ```
+
+## Examples
+
+A ready-to-use sample file is included so you can see Calusa's full visualization in seconds:
+
+```
+examples/ghost_network_sample.json
+```
+
+This is a real GHOST surveillance dataset — 30 samples spanning 4 transmission clusters (cluster sizes 15 / 6 / 4 / 2) plus a few unlinked samples. To try it:
+
+1. Open [bphl-molecular.github.io/Calusa](https://bphl-molecular.github.io/Calusa/)
+2. Click **Upload JSON** and select `examples/ghost_network_sample.json`
+3. Toggle **Show Labels**, drag nodes around, then try **Export PDF** — that's how the screenshot above was produced
+
+### GHOST System Compatibility
+
+If you are already running CDC's GHOST system for HCV/HAV surveillance, the visualizer accepts the GHOST `network.json` output directly — no conversion required. GHOST's `haplotypes` field is recognized as the equivalent of `num_sequences`, so node sizes still reflect within-host diversity. Simply open the [hosted Calusa](https://bphl-molecular.github.io/Calusa/) and upload your GHOST JSON.
 
 ## Output Files
 
