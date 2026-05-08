@@ -1,0 +1,1163 @@
+{
+  "metadata": {
+    "generated": "2026-02-18T11:45:22.515493",
+    "source": "GHOST Quality Control and Data Analysis",
+    "version": "1.0",
+    "samples_file": "all_samples_info.csv",
+    "links_file": "threshold_links.csv"
+  },
+  "nodes": [
+    {
+      "id": "Sample_001",
+      "genotype": "2a",
+      "haplotypes": 71,
+      "reads": 12270,
+      "diversity": 0.101,
+      "maxFreq": 0.717,
+      "cluster": 0
+    },
+    {
+      "id": "Sample_002",
+      "genotype": "1a",
+      "haplotypes": 49,
+      "reads": 5769,
+      "diversity": 0.22,
+      "maxFreq": 0.434,
+      "cluster": 1
+    },
+    {
+      "id": "Sample_003",
+      "genotype": "1a",
+      "haplotypes": 79,
+      "reads": 12849,
+      "diversity": 0.394,
+      "maxFreq": 0.885,
+      "cluster": 1
+    },
+    {
+      "id": "Sample_004",
+      "genotype": "1a",
+      "haplotypes": 23,
+      "reads": 10393,
+      "diversity": 0.223,
+      "maxFreq": 0.872,
+      "cluster": 1
+    },
+    {
+      "id": "Sample_005",
+      "genotype": "2a",
+      "haplotypes": 66,
+      "reads": 5775,
+      "diversity": 0.32,
+      "maxFreq": 0.781,
+      "cluster": 0
+    },
+    {
+      "id": "Sample_006",
+      "genotype": "2a",
+      "haplotypes": 63,
+      "reads": 11873,
+      "diversity": 0.358,
+      "maxFreq": 0.849,
+      "cluster": 0
+    },
+    {
+      "id": "Sample_007",
+      "genotype": "3a",
+      "haplotypes": 43,
+      "reads": 14268,
+      "diversity": 0.133,
+      "maxFreq": 0.752,
+      "cluster": null
+    },
+    {
+      "id": "Sample_008",
+      "genotype": "1a",
+      "haplotypes": 60,
+      "reads": 10892,
+      "diversity": 0.146,
+      "maxFreq": 0.678,
+      "cluster": 1
+    },
+    {
+      "id": "Sample_009",
+      "genotype": "1b",
+      "haplotypes": 97,
+      "reads": 13110,
+      "diversity": 0.267,
+      "maxFreq": 0.911,
+      "cluster": 2
+    },
+    {
+      "id": "Sample_010",
+      "genotype": "1a",
+      "haplotypes": 71,
+      "reads": 12408,
+      "diversity": 0.464,
+      "maxFreq": 0.694,
+      "cluster": 1
+    },
+    {
+      "id": "Sample_011",
+      "genotype": "1a",
+      "haplotypes": 47,
+      "reads": 8157,
+      "diversity": 0.368,
+      "maxFreq": 0.709,
+      "cluster": 1
+    },
+    {
+      "id": "Sample_012",
+      "genotype": "1b",
+      "haplotypes": 20,
+      "reads": 12392,
+      "diversity": 0.358,
+      "maxFreq": 0.848,
+      "cluster": 2
+    },
+    {
+      "id": "Sample_013",
+      "genotype": "1a",
+      "haplotypes": 98,
+      "reads": 5663,
+      "diversity": 0.24,
+      "maxFreq": 0.824,
+      "cluster": 1
+    },
+    {
+      "id": "Sample_014",
+      "genotype": "1a",
+      "haplotypes": 75,
+      "reads": 12554,
+      "diversity": 0.322,
+      "maxFreq": 0.87,
+      "cluster": 1
+    },
+    {
+      "id": "Sample_015",
+      "genotype": "2a",
+      "haplotypes": 51,
+      "reads": 6707,
+      "diversity": 0.445,
+      "maxFreq": 0.909,
+      "cluster": 0
+    },
+    {
+      "id": "Sample_016",
+      "genotype": "1b",
+      "haplotypes": 30,
+      "reads": 12125,
+      "diversity": 0.289,
+      "maxFreq": 0.815,
+      "cluster": 2
+    },
+    {
+      "id": "Sample_017",
+      "genotype": "1a",
+      "haplotypes": 86,
+      "reads": 14561,
+      "diversity": 0.125,
+      "maxFreq": 0.917,
+      "cluster": 1
+    },
+    {
+      "id": "Sample_018",
+      "genotype": "1b",
+      "haplotypes": 35,
+      "reads": 5262,
+      "diversity": 0.246,
+      "maxFreq": 0.976,
+      "cluster": 2
+    },
+    {
+      "id": "Sample_019",
+      "genotype": "2b",
+      "haplotypes": 22,
+      "reads": 7255,
+      "diversity": 0.349,
+      "maxFreq": 0.726,
+      "cluster": 3
+    },
+    {
+      "id": "Sample_020",
+      "genotype": "1a",
+      "haplotypes": 44,
+      "reads": 7557,
+      "diversity": 0.411,
+      "maxFreq": 0.629,
+      "cluster": 1
+    },
+    {
+      "id": "Sample_021",
+      "genotype": "2b",
+      "haplotypes": 67,
+      "reads": 14492,
+      "diversity": 0.092,
+      "maxFreq": 0.866,
+      "cluster": 3
+    },
+    {
+      "id": "Sample_022",
+      "genotype": "2a",
+      "haplotypes": 49,
+      "reads": 11893,
+      "diversity": 0.113,
+      "maxFreq": 0.459,
+      "cluster": 0
+    },
+    {
+      "id": "Sample_023",
+      "genotype": "1a",
+      "haplotypes": 67,
+      "reads": 12996,
+      "diversity": 0.273,
+      "maxFreq": 0.828,
+      "cluster": 1
+    },
+    {
+      "id": "Sample_024",
+      "genotype": "1a",
+      "haplotypes": 79,
+      "reads": 8170,
+      "diversity": 0.479,
+      "maxFreq": 0.681,
+      "cluster": 1
+    },
+    {
+      "id": "Sample_025",
+      "genotype": "4",
+      "haplotypes": 86,
+      "reads": 5569,
+      "diversity": 0.091,
+      "maxFreq": 0.621,
+      "cluster": null
+    },
+    {
+      "id": "Sample_026",
+      "genotype": "1a",
+      "haplotypes": 28,
+      "reads": 13096,
+      "diversity": 0.432,
+      "maxFreq": 0.688,
+      "cluster": 1
+    },
+    {
+      "id": "Sample_027",
+      "genotype": "1a",
+      "haplotypes": 27,
+      "reads": 7368,
+      "diversity": 0.282,
+      "maxFreq": 0.912,
+      "cluster": 1
+    },
+    {
+      "id": "Sample_028",
+      "genotype": "1a",
+      "haplotypes": 81,
+      "reads": 5574,
+      "diversity": 0.579,
+      "maxFreq": 0.647,
+      "cluster": 1
+    },
+    {
+      "id": "Sample_029",
+      "genotype": "2b",
+      "haplotypes": 79,
+      "reads": 8124,
+      "diversity": 0.506,
+      "maxFreq": 0.753,
+      "cluster": null
+    },
+    {
+      "id": "Sample_030",
+      "genotype": "2a",
+      "haplotypes": 49,
+      "reads": 9465,
+      "diversity": 0.293,
+      "maxFreq": 0.85,
+      "cluster": 0
+    }
+  ],
+  "links": [
+    {
+      "source": "Sample_001",
+      "target": "Sample_005",
+      "distance": 0.009,
+      "sharedSequences": 8,
+      "sharedProportion": 0.1212,
+      "density": 0.0648
+    },
+    {
+      "source": "Sample_001",
+      "target": "Sample_006",
+      "distance": 0.0218,
+      "sharedSequences": 3,
+      "sharedProportion": 0.0476,
+      "density": 0.0365
+    },
+    {
+      "source": "Sample_001",
+      "target": "Sample_015",
+      "distance": 0.011,
+      "sharedSequences": 7,
+      "sharedProportion": 0.1373,
+      "density": 0.0546
+    },
+    {
+      "source": "Sample_001",
+      "target": "Sample_022",
+      "distance": 0.0306,
+      "sharedSequences": 12,
+      "sharedProportion": 0.2449,
+      "density": 0.2257
+    },
+    {
+      "source": "Sample_001",
+      "target": "Sample_030",
+      "distance": 0.0017,
+      "sharedSequences": 1,
+      "sharedProportion": 0.0204,
+      "density": 0.0057
+    },
+    {
+      "source": "Sample_002",
+      "target": "Sample_003",
+      "distance": 0.001,
+      "sharedSequences": 7,
+      "sharedProportion": 0.1429,
+      "density": 0.1116
+    },
+    {
+      "source": "Sample_002",
+      "target": "Sample_004",
+      "distance": 0.0212,
+      "sharedSequences": 2,
+      "sharedProportion": 0.087,
+      "density": 0.0388
+    },
+    {
+      "source": "Sample_002",
+      "target": "Sample_010",
+      "distance": 0.0112,
+      "sharedSequences": 3,
+      "sharedProportion": 0.0612,
+      "density": 0.0441
+    },
+    {
+      "source": "Sample_002",
+      "target": "Sample_011",
+      "distance": 0.0121,
+      "sharedSequences": 11,
+      "sharedProportion": 0.234,
+      "density": 0.1614
+    },
+    {
+      "source": "Sample_002",
+      "target": "Sample_013",
+      "distance": 0.0026,
+      "sharedSequences": 4,
+      "sharedProportion": 0.0816,
+      "density": 0.0287
+    },
+    {
+      "source": "Sample_002",
+      "target": "Sample_014",
+      "distance": 0.0052,
+      "sharedSequences": 10,
+      "sharedProportion": 0.2041,
+      "density": 0.1538
+    },
+    {
+      "source": "Sample_002",
+      "target": "Sample_017",
+      "distance": 0.0249,
+      "sharedSequences": 9,
+      "sharedProportion": 0.1837,
+      "density": 0.1192
+    },
+    {
+      "source": "Sample_002",
+      "target": "Sample_020",
+      "distance": 0.0103,
+      "sharedSequences": 4,
+      "sharedProportion": 0.0909,
+      "density": 0.0626
+    },
+    {
+      "source": "Sample_002",
+      "target": "Sample_023",
+      "distance": 0.0038,
+      "sharedSequences": 3,
+      "sharedProportion": 0.0612,
+      "density": 0.0469
+    },
+    {
+      "source": "Sample_002",
+      "target": "Sample_024",
+      "distance": 0.0012,
+      "sharedSequences": 12,
+      "sharedProportion": 0.2449,
+      "density": 0.1498
+    },
+    {
+      "source": "Sample_002",
+      "target": "Sample_026",
+      "distance": 0.0059,
+      "sharedSequences": 1,
+      "sharedProportion": 0.0357,
+      "density": 0.0213
+    },
+    {
+      "source": "Sample_002",
+      "target": "Sample_027",
+      "distance": 0.0064,
+      "sharedSequences": 3,
+      "sharedProportion": 0.1111,
+      "density": 0.0556
+    },
+    {
+      "source": "Sample_002",
+      "target": "Sample_028",
+      "distance": 0.0145,
+      "sharedSequences": 11,
+      "sharedProportion": 0.2245,
+      "density": 0.0467
+    },
+    {
+      "source": "Sample_003",
+      "target": "Sample_004",
+      "distance": 0.0045,
+      "sharedSequences": 2,
+      "sharedProportion": 0.087,
+      "density": 0.0669
+    },
+    {
+      "source": "Sample_003",
+      "target": "Sample_008",
+      "distance": 0.0144,
+      "sharedSequences": 3,
+      "sharedProportion": 0.05,
+      "density": 0.0406
+    },
+    {
+      "source": "Sample_003",
+      "target": "Sample_010",
+      "distance": 0.0101,
+      "sharedSequences": 1,
+      "sharedProportion": 0.0141,
+      "density": 0.005
+    },
+    {
+      "source": "Sample_003",
+      "target": "Sample_011",
+      "distance": 0.0344,
+      "sharedSequences": 1,
+      "sharedProportion": 0.0213,
+      "density": 0.0205
+    },
+    {
+      "source": "Sample_003",
+      "target": "Sample_013",
+      "distance": 0.035,
+      "sharedSequences": 17,
+      "sharedProportion": 0.2152,
+      "density": 0.1641
+    },
+    {
+      "source": "Sample_003",
+      "target": "Sample_014",
+      "distance": 0.0232,
+      "sharedSequences": 21,
+      "sharedProportion": 0.28,
+      "density": 0.259
+    },
+    {
+      "source": "Sample_003",
+      "target": "Sample_017",
+      "distance": 0.005,
+      "sharedSequences": 2,
+      "sharedProportion": 0.0253,
+      "density": 0.0196
+    },
+    {
+      "source": "Sample_003",
+      "target": "Sample_020",
+      "distance": 0.0302,
+      "sharedSequences": 7,
+      "sharedProportion": 0.1591,
+      "density": 0.1079
+    },
+    {
+      "source": "Sample_003",
+      "target": "Sample_023",
+      "distance": 0.013,
+      "sharedSequences": 2,
+      "sharedProportion": 0.0299,
+      "density": 0.0124
+    },
+    {
+      "source": "Sample_003",
+      "target": "Sample_024",
+      "distance": 0.0214,
+      "sharedSequences": 10,
+      "sharedProportion": 0.1266,
+      "density": 0.0763
+    },
+    {
+      "source": "Sample_003",
+      "target": "Sample_027",
+      "distance": 0.0192,
+      "sharedSequences": 3,
+      "sharedProportion": 0.1111,
+      "density": 0.0673
+    },
+    {
+      "source": "Sample_004",
+      "target": "Sample_008",
+      "distance": 0.0,
+      "sharedSequences": 5,
+      "sharedProportion": 0.2174,
+      "density": 0.0943
+    },
+    {
+      "source": "Sample_004",
+      "target": "Sample_010",
+      "distance": 0.0076,
+      "sharedSequences": 3,
+      "sharedProportion": 0.1304,
+      "density": 0.0636
+    },
+    {
+      "source": "Sample_004",
+      "target": "Sample_011",
+      "distance": 0.0257,
+      "sharedSequences": 5,
+      "sharedProportion": 0.2174,
+      "density": 0.1222
+    },
+    {
+      "source": "Sample_004",
+      "target": "Sample_013",
+      "distance": 0.0127,
+      "sharedSequences": 3,
+      "sharedProportion": 0.1304,
+      "density": 0.0695
+    },
+    {
+      "source": "Sample_004",
+      "target": "Sample_014",
+      "distance": 0.0161,
+      "sharedSequences": 5,
+      "sharedProportion": 0.2174,
+      "density": 0.088
+    },
+    {
+      "source": "Sample_004",
+      "target": "Sample_017",
+      "distance": 0.0068,
+      "sharedSequences": 5,
+      "sharedProportion": 0.2174,
+      "density": 0.1017
+    },
+    {
+      "source": "Sample_004",
+      "target": "Sample_020",
+      "distance": 0.0207,
+      "sharedSequences": 1,
+      "sharedProportion": 0.0435,
+      "density": 0.0059
+    },
+    {
+      "source": "Sample_004",
+      "target": "Sample_023",
+      "distance": 0.0154,
+      "sharedSequences": 5,
+      "sharedProportion": 0.2174,
+      "density": 0.1465
+    },
+    {
+      "source": "Sample_004",
+      "target": "Sample_024",
+      "distance": 0.0011,
+      "sharedSequences": 1,
+      "sharedProportion": 0.0435,
+      "density": 0.0336
+    },
+    {
+      "source": "Sample_004",
+      "target": "Sample_026",
+      "distance": 0.0072,
+      "sharedSequences": 3,
+      "sharedProportion": 0.1304,
+      "density": 0.0868
+    },
+    {
+      "source": "Sample_004",
+      "target": "Sample_028",
+      "distance": 0.008,
+      "sharedSequences": 4,
+      "sharedProportion": 0.1739,
+      "density": 0.1402
+    },
+    {
+      "source": "Sample_005",
+      "target": "Sample_006",
+      "distance": 0.0193,
+      "sharedSequences": 1,
+      "sharedProportion": 0.0159,
+      "density": 0.0145
+    },
+    {
+      "source": "Sample_005",
+      "target": "Sample_015",
+      "distance": 0.03,
+      "sharedSequences": 5,
+      "sharedProportion": 0.098,
+      "density": 0.0755
+    },
+    {
+      "source": "Sample_005",
+      "target": "Sample_022",
+      "distance": 0.03,
+      "sharedSequences": 11,
+      "sharedProportion": 0.2245,
+      "density": 0.1505
+    },
+    {
+      "source": "Sample_005",
+      "target": "Sample_030",
+      "distance": 0.0108,
+      "sharedSequences": 2,
+      "sharedProportion": 0.0408,
+      "density": 0.0118
+    },
+    {
+      "source": "Sample_006",
+      "target": "Sample_015",
+      "distance": 0.0365,
+      "sharedSequences": 6,
+      "sharedProportion": 0.1176,
+      "density": 0.0659
+    },
+    {
+      "source": "Sample_006",
+      "target": "Sample_022",
+      "distance": 0.0201,
+      "sharedSequences": 13,
+      "sharedProportion": 0.2653,
+      "density": 0.1426
+    },
+    {
+      "source": "Sample_006",
+      "target": "Sample_030",
+      "distance": 0.0,
+      "sharedSequences": 11,
+      "sharedProportion": 0.2245,
+      "density": 0.1088
+    },
+    {
+      "source": "Sample_008",
+      "target": "Sample_010",
+      "distance": 0.0143,
+      "sharedSequences": 9,
+      "sharedProportion": 0.15,
+      "density": 0.1193
+    },
+    {
+      "source": "Sample_008",
+      "target": "Sample_011",
+      "distance": 0.0023,
+      "sharedSequences": 11,
+      "sharedProportion": 0.234,
+      "density": 0.032
+    },
+    {
+      "source": "Sample_008",
+      "target": "Sample_013",
+      "distance": 0.0048,
+      "sharedSequences": 6,
+      "sharedProportion": 0.1,
+      "density": 0.0346
+    },
+    {
+      "source": "Sample_008",
+      "target": "Sample_014",
+      "distance": 0.0132,
+      "sharedSequences": 8,
+      "sharedProportion": 0.1333,
+      "density": 0.1048
+    },
+    {
+      "source": "Sample_008",
+      "target": "Sample_017",
+      "distance": 0.0047,
+      "sharedSequences": 17,
+      "sharedProportion": 0.2833,
+      "density": 0.2016
+    },
+    {
+      "source": "Sample_008",
+      "target": "Sample_020",
+      "distance": 0.0039,
+      "sharedSequences": 6,
+      "sharedProportion": 0.1364,
+      "density": 0.0626
+    },
+    {
+      "source": "Sample_008",
+      "target": "Sample_024",
+      "distance": 0.0208,
+      "sharedSequences": 3,
+      "sharedProportion": 0.05,
+      "density": 0.0102
+    },
+    {
+      "source": "Sample_008",
+      "target": "Sample_026",
+      "distance": 0.0046,
+      "sharedSequences": 2,
+      "sharedProportion": 0.0714,
+      "density": 0.0499
+    },
+    {
+      "source": "Sample_008",
+      "target": "Sample_027",
+      "distance": 0.0,
+      "sharedSequences": 2,
+      "sharedProportion": 0.0741,
+      "density": 0.0611
+    },
+    {
+      "source": "Sample_009",
+      "target": "Sample_012",
+      "distance": 0.0,
+      "sharedSequences": 1,
+      "sharedProportion": 0.05,
+      "density": 0.0387
+    },
+    {
+      "source": "Sample_009",
+      "target": "Sample_018",
+      "distance": 0.0212,
+      "sharedSequences": 7,
+      "sharedProportion": 0.2,
+      "density": 0.1705
+    },
+    {
+      "source": "Sample_010",
+      "target": "Sample_011",
+      "distance": 0.0125,
+      "sharedSequences": 11,
+      "sharedProportion": 0.234,
+      "density": 0.1348
+    },
+    {
+      "source": "Sample_010",
+      "target": "Sample_013",
+      "distance": 0.0129,
+      "sharedSequences": 2,
+      "sharedProportion": 0.0282,
+      "density": 0.0064
+    },
+    {
+      "source": "Sample_010",
+      "target": "Sample_014",
+      "distance": 0.0069,
+      "sharedSequences": 11,
+      "sharedProportion": 0.1549,
+      "density": 0.1171
+    },
+    {
+      "source": "Sample_010",
+      "target": "Sample_017",
+      "distance": 0.0216,
+      "sharedSequences": 1,
+      "sharedProportion": 0.0141,
+      "density": 0.012
+    },
+    {
+      "source": "Sample_010",
+      "target": "Sample_020",
+      "distance": 0.0043,
+      "sharedSequences": 9,
+      "sharedProportion": 0.2045,
+      "density": 0.1055
+    },
+    {
+      "source": "Sample_010",
+      "target": "Sample_023",
+      "distance": 0.0153,
+      "sharedSequences": 5,
+      "sharedProportion": 0.0746,
+      "density": 0.0438
+    },
+    {
+      "source": "Sample_010",
+      "target": "Sample_026",
+      "distance": 0.0211,
+      "sharedSequences": 3,
+      "sharedProportion": 0.1071,
+      "density": 0.056
+    },
+    {
+      "source": "Sample_010",
+      "target": "Sample_028",
+      "distance": 0.0,
+      "sharedSequences": 9,
+      "sharedProportion": 0.1268,
+      "density": 0.0589
+    },
+    {
+      "source": "Sample_011",
+      "target": "Sample_017",
+      "distance": 0.0326,
+      "sharedSequences": 1,
+      "sharedProportion": 0.0213,
+      "density": 0.0043
+    },
+    {
+      "source": "Sample_011",
+      "target": "Sample_020",
+      "distance": 0.0193,
+      "sharedSequences": 8,
+      "sharedProportion": 0.1818,
+      "density": 0.0706
+    },
+    {
+      "source": "Sample_011",
+      "target": "Sample_023",
+      "distance": 0.0105,
+      "sharedSequences": 7,
+      "sharedProportion": 0.1489,
+      "density": 0.0975
+    },
+    {
+      "source": "Sample_011",
+      "target": "Sample_024",
+      "distance": 0.0233,
+      "sharedSequences": 12,
+      "sharedProportion": 0.2553,
+      "density": 0.1534
+    },
+    {
+      "source": "Sample_011",
+      "target": "Sample_026",
+      "distance": 0.013,
+      "sharedSequences": 3,
+      "sharedProportion": 0.1071,
+      "density": 0.035
+    },
+    {
+      "source": "Sample_011",
+      "target": "Sample_027",
+      "distance": 0.02,
+      "sharedSequences": 7,
+      "sharedProportion": 0.2593,
+      "density": 0.0862
+    },
+    {
+      "source": "Sample_012",
+      "target": "Sample_016",
+      "distance": 0.0069,
+      "sharedSequences": 4,
+      "sharedProportion": 0.2,
+      "density": 0.0961
+    },
+    {
+      "source": "Sample_012",
+      "target": "Sample_018",
+      "distance": 0.0008,
+      "sharedSequences": 3,
+      "sharedProportion": 0.15,
+      "density": 0.0982
+    },
+    {
+      "source": "Sample_013",
+      "target": "Sample_014",
+      "distance": 0.0059,
+      "sharedSequences": 9,
+      "sharedProportion": 0.12,
+      "density": 0.0443
+    },
+    {
+      "source": "Sample_013",
+      "target": "Sample_017",
+      "distance": 0.0064,
+      "sharedSequences": 2,
+      "sharedProportion": 0.0233,
+      "density": 0.0139
+    },
+    {
+      "source": "Sample_013",
+      "target": "Sample_020",
+      "distance": 0.0137,
+      "sharedSequences": 10,
+      "sharedProportion": 0.2273,
+      "density": 0.07
+    },
+    {
+      "source": "Sample_013",
+      "target": "Sample_024",
+      "distance": 0.0325,
+      "sharedSequences": 1,
+      "sharedProportion": 0.0127,
+      "density": 0.009
+    },
+    {
+      "source": "Sample_013",
+      "target": "Sample_026",
+      "distance": 0.0,
+      "sharedSequences": 3,
+      "sharedProportion": 0.1071,
+      "density": 0.0454
+    },
+    {
+      "source": "Sample_013",
+      "target": "Sample_027",
+      "distance": 0.0,
+      "sharedSequences": 3,
+      "sharedProportion": 0.1111,
+      "density": 0.043
+    },
+    {
+      "source": "Sample_013",
+      "target": "Sample_028",
+      "distance": 0.0063,
+      "sharedSequences": 13,
+      "sharedProportion": 0.1605,
+      "density": 0.1017
+    },
+    {
+      "source": "Sample_014",
+      "target": "Sample_017",
+      "distance": 0.029,
+      "sharedSequences": 15,
+      "sharedProportion": 0.2,
+      "density": 0.1408
+    },
+    {
+      "source": "Sample_014",
+      "target": "Sample_020",
+      "distance": 0.0189,
+      "sharedSequences": 1,
+      "sharedProportion": 0.0227,
+      "density": 0.0056
+    },
+    {
+      "source": "Sample_014",
+      "target": "Sample_024",
+      "distance": 0.0038,
+      "sharedSequences": 2,
+      "sharedProportion": 0.0267,
+      "density": 0.0156
+    },
+    {
+      "source": "Sample_014",
+      "target": "Sample_026",
+      "distance": 0.0255,
+      "sharedSequences": 3,
+      "sharedProportion": 0.1071,
+      "density": 0.0411
+    },
+    {
+      "source": "Sample_014",
+      "target": "Sample_027",
+      "distance": 0.0285,
+      "sharedSequences": 4,
+      "sharedProportion": 0.1481,
+      "density": 0.0339
+    },
+    {
+      "source": "Sample_014",
+      "target": "Sample_028",
+      "distance": 0.0,
+      "sharedSequences": 21,
+      "sharedProportion": 0.28,
+      "density": 0.2276
+    },
+    {
+      "source": "Sample_015",
+      "target": "Sample_022",
+      "distance": 0.0198,
+      "sharedSequences": 9,
+      "sharedProportion": 0.1837,
+      "density": 0.1169
+    },
+    {
+      "source": "Sample_015",
+      "target": "Sample_030",
+      "distance": 0.0321,
+      "sharedSequences": 11,
+      "sharedProportion": 0.2245,
+      "density": 0.1451
+    },
+    {
+      "source": "Sample_016",
+      "target": "Sample_018",
+      "distance": 0.0021,
+      "sharedSequences": 6,
+      "sharedProportion": 0.2,
+      "density": 0.0485
+    },
+    {
+      "source": "Sample_017",
+      "target": "Sample_020",
+      "distance": 0.0,
+      "sharedSequences": 11,
+      "sharedProportion": 0.25,
+      "density": 0.1854
+    },
+    {
+      "source": "Sample_017",
+      "target": "Sample_023",
+      "distance": 0.008,
+      "sharedSequences": 3,
+      "sharedProportion": 0.0448,
+      "density": 0.0342
+    },
+    {
+      "source": "Sample_017",
+      "target": "Sample_024",
+      "distance": 0.0115,
+      "sharedSequences": 12,
+      "sharedProportion": 0.1519,
+      "density": 0.0836
+    },
+    {
+      "source": "Sample_017",
+      "target": "Sample_026",
+      "distance": 0.0109,
+      "sharedSequences": 1,
+      "sharedProportion": 0.0357,
+      "density": 0.0264
+    },
+    {
+      "source": "Sample_017",
+      "target": "Sample_027",
+      "distance": 0.006,
+      "sharedSequences": 7,
+      "sharedProportion": 0.2593,
+      "density": 0.2283
+    },
+    {
+      "source": "Sample_017",
+      "target": "Sample_028",
+      "distance": 0.0182,
+      "sharedSequences": 12,
+      "sharedProportion": 0.1481,
+      "density": 0.0192
+    },
+    {
+      "source": "Sample_019",
+      "target": "Sample_021",
+      "distance": 0.0113,
+      "sharedSequences": 2,
+      "sharedProportion": 0.0909,
+      "density": 0.0646
+    },
+    {
+      "source": "Sample_020",
+      "target": "Sample_024",
+      "distance": 0.0135,
+      "sharedSequences": 10,
+      "sharedProportion": 0.2273,
+      "density": 0.0961
+    },
+    {
+      "source": "Sample_020",
+      "target": "Sample_026",
+      "distance": 0.0005,
+      "sharedSequences": 6,
+      "sharedProportion": 0.2143,
+      "density": 0.1139
+    },
+    {
+      "source": "Sample_020",
+      "target": "Sample_028",
+      "distance": 0.0064,
+      "sharedSequences": 4,
+      "sharedProportion": 0.0909,
+      "density": 0.0556
+    },
+    {
+      "source": "Sample_022",
+      "target": "Sample_030",
+      "distance": 0.0058,
+      "sharedSequences": 7,
+      "sharedProportion": 0.1429,
+      "density": 0.0912
+    },
+    {
+      "source": "Sample_023",
+      "target": "Sample_024",
+      "distance": 0.005,
+      "sharedSequences": 18,
+      "sharedProportion": 0.2687,
+      "density": 0.1544
+    },
+    {
+      "source": "Sample_023",
+      "target": "Sample_026",
+      "distance": 0.029,
+      "sharedSequences": 1,
+      "sharedProportion": 0.0357,
+      "density": 0.024
+    },
+    {
+      "source": "Sample_023",
+      "target": "Sample_027",
+      "distance": 0.0115,
+      "sharedSequences": 6,
+      "sharedProportion": 0.2222,
+      "density": 0.1362
+    },
+    {
+      "source": "Sample_023",
+      "target": "Sample_028",
+      "distance": 0.0035,
+      "sharedSequences": 2,
+      "sharedProportion": 0.0299,
+      "density": 0.0152
+    },
+    {
+      "source": "Sample_024",
+      "target": "Sample_027",
+      "distance": 0.0,
+      "sharedSequences": 7,
+      "sharedProportion": 0.2593,
+      "density": 0.1403
+    },
+    {
+      "source": "Sample_024",
+      "target": "Sample_028",
+      "distance": 0.0236,
+      "sharedSequences": 3,
+      "sharedProportion": 0.038,
+      "density": 0.0309
+    },
+    {
+      "source": "Sample_026",
+      "target": "Sample_027",
+      "distance": 0.005,
+      "sharedSequences": 4,
+      "sharedProportion": 0.1481,
+      "density": 0.1236
+    },
+    {
+      "source": "Sample_026",
+      "target": "Sample_028",
+      "distance": 0.0194,
+      "sharedSequences": 4,
+      "sharedProportion": 0.1429,
+      "density": 0.1005
+    },
+    {
+      "source": "Sample_027",
+      "target": "Sample_028",
+      "distance": 0.0113,
+      "sharedSequences": 2,
+      "sharedProportion": 0.0741,
+      "density": 0.0628
+    }
+  ]
+}
